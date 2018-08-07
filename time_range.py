@@ -18,14 +18,15 @@ class TimeRange:
     def compare(self, other_time_range):
         return self.t1 == other_time_range.t1 and self.t2 == other_time_range.t2
 
-    def subtract(self, other_time_range, time_range_list):
+    def subtract(self, other_time_range):
+        output = []
         if (self.t1 < other_time_range.t1):
-            time_range_list.insert(TimeRange(self.t1, other_time_range.t1))
+            output.append(TimeRange(self.t1, other_time_range.t1))
         
         if (self.t2 > other_time_range.t2):
-            time_range_list.insert(TimeRange(other_time_range.t2, self.t2))
+            output.append(TimeRange(other_time_range.t2, self.t2))
 
-        return time_range_list
+        return output
 
 class TimeRangeList:
 
@@ -58,11 +59,11 @@ class TimeRangeList:
     def subtract(self, other_time_ranges):
         current_time_range_index = 0 #keep track of index in list a
         current_other_time_range_index = 0 #keep track of index in list b
-        output = TimeRangeList()
+        output = []
 
         while(current_time_range_index < len(self.time_ranges) and current_other_time_range_index < len(other_time_ranges)):
             if self.time_ranges[current_time_range_index].overlaps(other_time_ranges[current_other_time_range_index]): #if the two time ranges overlap
-                self.time_ranges[current_time_range_index].subtract(other_time_ranges[current_other_time_range_index], output) #subtract the ranges and adds to output
+                output += self.time_ranges[current_time_range_index].subtract(other_time_ranges[current_other_time_range_index]) #subtract the ranges and adds to output
             
             if self.time_ranges[current_time_range_index] < other_time_ranges[current_other_time_range_index]: #if current list a's timerange ends before current list b's
                 current_time_range_index += 1 #move to the next timerange in list a
