@@ -10,6 +10,6 @@ Your solution shouldn't rely on the granularity of the timestamps (so don't, for
  - No time ranges overlap within the list itself.
  - Times are NOT sorted ascending (even though all examples are)
 
- ## Running
+ ## Running Tests
 
  `python -m unittest tests`

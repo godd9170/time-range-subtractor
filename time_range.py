@@ -13,12 +13,15 @@ class TimeRange:
         return self.t2 < other_time_range.t2
 
     def overlaps(self, other_time_range):
+        """Given other_time_range, returns True if the ranges overlap at all"""
         return not (self.t1 > other_time_range.t2 or self.t2 < other_time_range.t1) #check for non-overlaps and negate
     
     def compare(self, other_time_range):
+        """Returns True if other_time_range is identical to time range"""
         return self.t1 == other_time_range.t1 and self.t2 == other_time_range.t2
 
     def subtract(self, other_time_range):
+        """Computes the resulting times range(s) not included in other_time_range"""
         output = []
         if (self.t1 < other_time_range.t1):
             output.append(TimeRange(self.t1, other_time_range.t1))
@@ -37,7 +40,6 @@ class TimeRangeList:
     def __str__(self):
         if(self.length == 0):
             return "()"
-
         pretty = "{0}".format(self.time_ranges[0])
         for time_range in self.time_ranges[1:]:
             pretty += ", {0}".format(time_range)
@@ -49,30 +51,53 @@ class TimeRangeList:
     def __getitem__(self, i):
         return self.time_ranges[i]
 
-    def insert(self, new_time_range):
-        self.time_ranges.append(new_time_range)
+    def insert(self, new_time_range, index=None):
+        """Adds a new time range to the list at the index specified, appends to the end should no index be provided"""
+        if (index is not None):
+            self.time_ranges.insert(index, new_time_range)
+        else:
+            self.time_ranges.append(new_time_range)
         self.length += 1
 
+    def overwrite(self, new_time_range, index):
+        """Replaces the time range at the provided index"""
+        self.time_ranges[index] = new_time_range
+    
+    def delete(self, index):
+        """Deletes a time range given it's index"""
+        del self.time_ranges[index]
+        self.length -= 1
+
     def sort(self):
+        """Basic nlogn sort of the TimeRangeList list"""
         self.time_ranges.sort()
 
     def subtract(self, other_time_ranges):
+        """In place updates the time ranges to remove any ranges that overlap with other_time_ranges"""
         current_time_range_index = 0 #keep track of index in list a
         current_other_time_range_index = 0 #keep track of index in list b
-        output = []
+        output = TimeRangeList()
 
-        while(current_time_range_index < len(self.time_ranges) and current_other_time_range_index < len(other_time_ranges)):
+        while(current_time_range_index < self.length and current_other_time_range_index < len(other_time_ranges)):
             if self.time_ranges[current_time_range_index].overlaps(other_time_ranges[current_other_time_range_index]): #if the two time ranges overlap
-                output += self.time_ranges[current_time_range_index].subtract(other_time_ranges[current_other_time_range_index]) #subtract the ranges and adds to output
+                difference = self.time_ranges[current_time_range_index].subtract(other_time_ranges[current_other_time_range_index]) #subtract the ranges
+                if(len(difference) >= 1): #if there is only one range yielded 
+                    self.overwrite(difference[0], current_time_range_index) #inplace replace the range
+                else: #if there are no date ranges yielded 
+                    self.delete(current_time_range_index) #remove the range
+                    continue #skip the rest of the iteration, all iterators are correct
+
+                if(len(difference) == 2): #if there are two ranges yielded
+                    self.insert(difference[1]) #insert the second range inorder, into the range list
+
             
             if self.time_ranges[current_time_range_index] < other_time_ranges[current_other_time_range_index]: #if current list a's timerange ends before current list b's
                 current_time_range_index += 1 #move to the next timerange in list a
             else:
                 current_other_time_range_index += 1 #move to the next timerange in list b
-
-        return output
     
     def compare(self, other_time_ranges):
+        """Returns true if other_time_ranges is identical to time range list"""
         if(self.length != len(other_time_ranges)):
             return False
 
