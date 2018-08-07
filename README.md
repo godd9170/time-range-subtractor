@@ -12,6 +12,25 @@ Your solution shouldn't rely on the granularity of the timestamps (so don't, for
  - No time ranges overlap within the list itself.
  - Times are NOT sorted ascending (even though all examples are)
 
+ ## Getting Started
+
+Ensure pipenv is installed
+```
+brew install pipenv
+```
+
+Install requirements
+```
+pipenv install
+```
+
+Run the server
+```
+pipenv run python app.py
+```
+
  ## Running Tests
 
- `python -m unittest tests`
+ ```
+ pipenv run python -m unittest tests
+ ```
