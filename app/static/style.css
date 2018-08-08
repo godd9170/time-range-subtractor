@@ -6,6 +6,10 @@
     flex: 1;
 }
 
+.answer {
+    padding-top: 12px;
+}
+
 .time-range-list {
     list-style-type: none;
 }

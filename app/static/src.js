@@ -172,7 +172,7 @@ class App extends React.Component {
             onRangeRemove={this.onRangeRemove}
           />
         </div>
-        <div className="column">
+        <div className="column answer">
           <ReadOnlyTimeRange ranges={a} />
           <ReadOnlyTimeRange ranges={b} />
           <button type="submit">=</button>
