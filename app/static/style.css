@@ -1,0 +1,21 @@
+.app {
+    display: flex;
+}
+
+.column {
+    flex: 1;
+}
+
+.time-range-list {
+    list-style-type: none;
+}
+
+.time-range-list .add-new-range {
+    cursor: pointer;
+}
+
+.time-range-list .delete-range {
+    cursor: pointer;
+    padding-left: 5px;
+    color: red;
+}

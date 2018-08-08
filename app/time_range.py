@@ -11,6 +11,14 @@ class TimeRange:
     
     def __lt__(self, other_time_range):
         return self.t2 < other_time_range.t2
+    
+    def to_dict(self):
+        return {
+            'h1': int(self.t1.strftime('%H')), 
+            'm1': int(self.t1.strftime('%M')),
+            'h2': int(self.t2.strftime('%H')),
+            'm2': int(self.t2.strftime('%M'))
+        }
 
     def overlaps(self, other_time_range):
         """Given other_time_range, returns True if the ranges overlap at all"""
@@ -44,6 +52,14 @@ class TimeRangeList:
         for time_range in self.time_ranges[1:]:
             pretty += ", {0}".format(time_range)
         return "({})".format(pretty)
+
+    def to_array(self):
+        if(self.length == 0):
+            return []
+        arr = []
+        for time_range in self.time_ranges:
+            arr.append(time_range.to_dict())
+        return arr
     
     def __len__(self):
         return self.length
@@ -73,7 +89,7 @@ class TimeRangeList:
         self.time_ranges.sort()
 
     def subtract(self, other_time_ranges):
-        """In place updates the time ranges to remove any ranges that overlap with other_time_ranges"""
+        """In place update the time ranges to remove any ranges that overlap with other_time_ranges"""
         current_time_range_index = 0 #keep track of index in list a
         current_other_time_range_index = 0 #keep track of index in list b
         output = TimeRangeList()

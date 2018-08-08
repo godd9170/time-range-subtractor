@@ -26,11 +26,28 @@ pipenv install
 
 Run the server
 ```
-pipenv run python app.py
+pipenv run python ./app/app.py
+```
+
+## Deployment
+
+Ensure Heroku cli
+```
+brew install heroku/brew/heroku
+```
+
+Create Heroku app
+```
+heroku create
+```
+
+Push to deploy
+```
+git push heroku master
 ```
 
  ## Running Tests
 
  ```
- pipenv run python -m unittest tests
+ pipenv run python -m unittest ./app/tests
  ```
