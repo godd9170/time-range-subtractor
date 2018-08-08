@@ -6,6 +6,10 @@ A time range has a start time and an end time. You can define timeas and time ra
 
 Your solution shouldn't rely on the granularity of the timestamps (so don't, for example, iterate over all the times in all the ranges and check to see if that time is "in").
 
+# Solution
+
+See https://dry-sierra-32224.herokuapp.com/ for a live example.
+
 ## Assumptions
 
  - All time ranges are on the same day and don't for example, wrap to the next day.
